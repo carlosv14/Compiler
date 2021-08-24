@@ -6,7 +6,4 @@ else
     x:=5;
 
 y:=6+2+3+5;
-print(x);
-print(x>6);
-print(x=7);
 }
