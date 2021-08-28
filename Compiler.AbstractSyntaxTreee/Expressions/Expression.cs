@@ -1,16 +1,18 @@
 ﻿using Compiler.Lexer.Tokens;
 namespace Compiler.AbstractSyntaxTreee.Expressions
 {
-    public class Expression : Node
+    public abstract class Expression : Node
     {
-        public Token Token { get; private set; }
+        protected readonly Type type;
 
-        public Type Type { get; set; }
+        public Token Token { get; private set; }
 
         public Expression(Token token, Type type)
         {
             Token = token;
-            Type = type;
+            this.type = type;
         }
+
+        public abstract Type GetExpressionType();
     }
 }

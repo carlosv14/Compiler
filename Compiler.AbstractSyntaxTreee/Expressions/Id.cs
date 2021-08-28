@@ -10,5 +10,10 @@ namespace Compiler.AbstractSyntaxTreee.Expressions
         public Id(Token token, Type type) : base(token, type)
         {
         }
+
+        public override Type GetExpressionType()
+        {
+            return type;
+        }
     }
 }

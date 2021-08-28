@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Compiler.AbstractSyntaxTreee.Expressions
 {
-    public class Operator : Expression
+    public abstract class Operator : Expression
     {
         public Operator(Token token, Type type) : base(token, type)
         {

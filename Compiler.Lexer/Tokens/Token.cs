@@ -8,8 +8,6 @@ namespace Compiler.Lexer.Tokens
     {
         public TokenType TokenType { get; set; }
 
-        public int? PositionInSymbolTable { get; set; }
-
         public string Lexeme { get; set; }
 
         public int Line { get; set; }

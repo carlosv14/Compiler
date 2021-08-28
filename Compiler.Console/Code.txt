@@ -1,9 +1,21 @@
 ﻿{
+float o;
 int x;
-if(x>2)
+int y;
+string a;
+print(x,y,a,o);
+o:= 5.89;
+a := o + 'hola peter!';
+if(1>2)
     x := 10;
 else
-    x:=5;
+    a:= 'adios';
 
+{
+    int w;
+    {
+	int ylf;
+    }
+}
 y:=6+2+3+5;
 }

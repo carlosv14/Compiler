@@ -5,16 +5,17 @@ using System.Text;
 
 namespace Compiler.AbstractSyntaxTreee.Expressions
 {
-    public class RelationalExpression : BinaryOperator
+    public class ArgumentExpression : BinaryOperator
     {
-        public RelationalExpression(Token token, Expression leftExpression, Expression rightExpression)
+        public ArgumentExpression(Token token, Expression leftExpression, Expression rightExpression)
             : base(token, leftExpression, rightExpression, null)
         {
+
         }
 
         public override Type GetExpressionType()
         {
-            return Type.Bool;
+            throw new NotImplementedException();
         }
     }
 }

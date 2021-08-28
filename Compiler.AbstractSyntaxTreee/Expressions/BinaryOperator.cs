@@ -5,11 +5,11 @@ using System.Text;
 
 namespace Compiler.AbstractSyntaxTreee.Expressions
 {
-    public class BinaryOperator : Operator
+    public abstract class BinaryOperator : Operator
     {
 
-        public BinaryOperator(Token token, Expression leftExpression, Expression rightExpression)
-            : base(token, null)
+        public BinaryOperator(Token token, Expression leftExpression, Expression rightExpression, Type type)
+            : base(token, type)
         {
             LeftExpression = leftExpression;
             RightExpression = rightExpression;

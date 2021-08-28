@@ -13,7 +13,7 @@ namespace Compiler.Console
             var scanner = new Scanner(input);
             var parser = new Parser.Parser(scanner);
             var ast = parser.Parse();
-            System.Console.WriteLine("Success!");
+            System.Console.WriteLine("Success!{code}");
         }
     }
 }

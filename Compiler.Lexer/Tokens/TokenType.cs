@@ -23,12 +23,16 @@ namespace Compiler.Lexer.Tokens
         IfKeyword,
         ElseKeyword,
         Identifier,
-        Constant,
+        IntConstant,
+        FloatConstant,
         Assignation,
-        StringLiteral,
+        StringConstant,
         EOF,
         OpenBrace,
         CloseBrace,
-        Comma
+        Comma,
+        BasicType,
+        FloatKeyword,
+        StringKeyword
     }
 }

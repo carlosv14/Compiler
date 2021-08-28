@@ -11,6 +11,7 @@ namespace Compiler.Parser
     {
         private readonly IScanner scanner;
         private Token lookAhead;
+        private Environment top;
 
         public Parser(IScanner scanner)
         {
@@ -31,9 +32,12 @@ namespace Compiler.Parser
         private Statement Block()
         {
             Match(TokenType.OpenBrace);
+            var previousSavedEnvironment = top;
+            top = new Environment(top);
             Decls();
             var statements = Stmts();
             Match(TokenType.CloseBrace);
+            top = previousSavedEnvironment;
             return statements;
         }
 
@@ -54,7 +58,7 @@ namespace Compiler.Parser
             {
                 case TokenType.Identifier:
                     {
-                        var id = new Id(lookAhead, AbstractSyntaxTreee.Type.Int);
+                        var id = top.Get(this.lookAhead.Lexeme);
                         Match(TokenType.Identifier);
                         if (this.lookAhead.TokenType == TokenType.Assignation)
                         {
@@ -145,12 +149,20 @@ namespace Compiler.Parser
                         Match(TokenType.RightParens);
                         return expression;
                     }
-                case TokenType.Constant:
+                case TokenType.IntConstant:
                     var constant = new Constant(lookAhead, AbstractSyntaxTreee.Type.Int);
-                    Match(TokenType.Constant);
+                    Match(TokenType.IntConstant);
+                    return constant;
+                case TokenType.FloatConstant:
+                    constant = new Constant(lookAhead, AbstractSyntaxTreee.Type.Float);
+                    Match(TokenType.FloatConstant);
+                    return constant;
+                case TokenType.StringConstant:
+                    constant = new Constant(lookAhead, AbstractSyntaxTreee.Type.String);
+                    Match(TokenType.StringConstant);
                     return constant;
                 default:
-                    var id = new Id(lookAhead, AbstractSyntaxTreee.Type.Int);
+                    var id = top.Get(this.lookAhead.Lexeme);
                     Match(TokenType.Identifier);
                     return id;
             }
@@ -159,30 +171,31 @@ namespace Compiler.Parser
         private Statement CallStmt(Id id)
         {
             Match(TokenType.LeftParens);
-            OptParams();
+            var @params = OptParams();
             Match(TokenType.RightParens);
             Match(TokenType.SemiColon);
-            throw new NotImplementedException();
-            return Statement.Null;
+            return new CallStatement(id, @params);
         }
 
-        private void OptParams()
+        private Expression OptParams()
         {
             if (this.lookAhead.TokenType != TokenType.RightParens)
             {
-                Params();
+                return Params();
             }
+            return null;
         }
 
-        private void Params()
+        private Expression Params()
         {
-            Eq();
+            var expression = Eq();
             if (this.lookAhead.TokenType != TokenType.Comma)
             {
-                return;
+                return expression;
             }
             Match(TokenType.Comma);
-            Params();
+            expression = new ArgumentExpression(lookAhead, expression, Params());
+            return expression;
         }
 
         private Statement AssignStmt(Id id)
@@ -195,19 +208,44 @@ namespace Compiler.Parser
 
         private void Decls()
         {
-            if (this.lookAhead.TokenType == TokenType.IntKeyword)
+            if (this.lookAhead.TokenType == TokenType.IntKeyword ||
+                this.lookAhead.TokenType == TokenType.FloatKeyword ||
+                this.lookAhead.TokenType == TokenType.StringKeyword)
             {
                 Decl();
                 Decls();
             }
-            //E
         }
 
         private void Decl()
         {
-            Match(TokenType.IntKeyword);
-            Match(TokenType.Identifier);
-            Match(TokenType.SemiColon);
+            switch (this.lookAhead.TokenType)
+            {
+                case TokenType.FloatKeyword:
+                    Match(TokenType.FloatKeyword);
+                    var token = lookAhead;
+                    Match(TokenType.Identifier);
+                    Match(TokenType.SemiColon);
+                    var id = new Id(token, AbstractSyntaxTreee.Type.Float);
+                    top.Add(token.Lexeme, id);
+                    break;
+                case TokenType.StringKeyword:
+                    Match(TokenType.StringKeyword);
+                    token = lookAhead;
+                    Match(TokenType.Identifier);
+                    Match(TokenType.SemiColon);
+                    id = new Id(token, AbstractSyntaxTreee.Type.String);
+                    top.Add(token.Lexeme, id);
+                    break;
+                default:
+                    Match(TokenType.IntKeyword);
+                    token = lookAhead;
+                    Match(TokenType.Identifier);
+                    Match(TokenType.SemiColon);
+                    id = new Id(token, AbstractSyntaxTreee.Type.Int);
+                    top.Add(token.Lexeme, id);
+                    break;
+            }
         }
 
         private void Move()
