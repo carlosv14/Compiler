@@ -21,6 +21,8 @@ namespace Compiler.AbstractSyntaxTreee
         public static Type Float => new Type("float", TokenType.BasicType);
         public static Type Bool => new Type("bool", TokenType.BasicType);
         public static Type String => new Type("string", TokenType.BasicType);
+        public static Type Void => new Type("void", TokenType.BasicType);
+
 
         public bool Equals(Type other)
         {

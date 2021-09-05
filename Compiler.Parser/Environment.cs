@@ -5,26 +5,60 @@ using System.Text;
 
 namespace Compiler.Parser
 {
+    public enum SymbolType
+    {
+        Variable,
+        Method
+    }
+
+    public class Symbol
+    {
+        public Symbol(SymbolType symbolType, Id id)
+        {
+            SymbolType = symbolType;
+            Id = id;
+        }
+
+        public Symbol(SymbolType symbolType, Id id, Expression attributes)
+        {
+            Attributes = attributes;
+            SymbolType = symbolType;
+            Id = id;
+        }
+
+        public SymbolType SymbolType { get; }
+        public Id Id { get; }
+        public Expression Attributes { get; }
+    }
+
     public class Environment
     {
-        private readonly Dictionary<string, Id> _table;
+        private readonly Dictionary<string, Symbol> _table;
         protected Environment Previous;
 
         public Environment(Environment previous)
         {
             Previous = previous;
-            _table = new Dictionary<string, Id>();
+            _table = new Dictionary<string, Symbol>();
         }
 
-        public void Add(string lexeme, Id id)
+        public void AddVariable(string lexeme, Id id)
         {
-            if(!_table.TryAdd(lexeme, id))
+            if(!_table.TryAdd(lexeme, new Symbol(SymbolType.Variable, id)))
             {
                 throw new ApplicationException($"Variable {lexeme} already defined in current context");
             }
         }
 
-        public Id Get(string lexeme)
+        public void AddMethod(string lexeme, Id id, BinaryOperator arguments)
+        {
+            if (!_table.TryAdd(lexeme, new Symbol(SymbolType.Method, id, arguments)))
+            {
+                throw new ApplicationException($"Method {lexeme} already defined in current context");
+            }
+        }
+
+        public Symbol Get(string lexeme)
         {
             for (var currentEnv = this; currentEnv != null; currentEnv = Previous)
             {
@@ -33,7 +67,7 @@ namespace Compiler.Parser
                     return found;
                 }
             }
-            throw new ApplicationException($"Variable {lexeme} doesn't exist in current context");
+            throw new ApplicationException($"Symbol {lexeme} doesn't exist in current context");
         }
     }
 }

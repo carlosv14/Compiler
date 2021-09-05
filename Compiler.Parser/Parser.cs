@@ -34,6 +34,22 @@ namespace Compiler.Parser
             Match(TokenType.OpenBrace);
             var previousSavedEnvironment = top;
             top = new Environment(top);
+            top.AddMethod("print", new Id(new Token
+            {
+                Lexeme = "print"
+            }, AbstractSyntaxTreee.Type.Void),
+            new ArgumentExpression(new Token {
+                Lexeme = ","
+            }, 
+            new Id(new Token
+            {
+                Lexeme = "arg1"
+            }, AbstractSyntaxTreee.Type.String),
+            new Id(new Token
+            {
+                Lexeme = "arg2"
+            }, AbstractSyntaxTreee.Type.String)));
+
             Decls();
             var statements = Stmts();
             Match(TokenType.CloseBrace);
@@ -58,13 +74,13 @@ namespace Compiler.Parser
             {
                 case TokenType.Identifier:
                     {
-                        var id = top.Get(this.lookAhead.Lexeme);
+                        var symbol = top.Get(this.lookAhead.Lexeme);
                         Match(TokenType.Identifier);
                         if (this.lookAhead.TokenType == TokenType.Assignation)
                         {
-                            return AssignStmt(id);
+                            return AssignStmt(symbol.Id);
                         }
-                        return CallStmt(id);
+                        return CallStmt(symbol);
                     }
                 case TokenType.IfKeyword:
                     {
@@ -162,19 +178,19 @@ namespace Compiler.Parser
                     Match(TokenType.StringConstant);
                     return constant;
                 default:
-                    var id = top.Get(this.lookAhead.Lexeme);
+                    var symbol = top.Get(this.lookAhead.Lexeme);
                     Match(TokenType.Identifier);
-                    return id;
+                    return symbol.Id;
             }
         }
 
-        private Statement CallStmt(Id id)
+        private Statement CallStmt(Symbol symbol)
         {
             Match(TokenType.LeftParens);
             var @params = OptParams();
             Match(TokenType.RightParens);
             Match(TokenType.SemiColon);
-            return new CallStatement(id, @params);
+            return new CallStatement(symbol.Id, @params, symbol.Attributes);
         }
 
         private Expression OptParams()
@@ -227,7 +243,7 @@ namespace Compiler.Parser
                     Match(TokenType.Identifier);
                     Match(TokenType.SemiColon);
                     var id = new Id(token, AbstractSyntaxTreee.Type.Float);
-                    top.Add(token.Lexeme, id);
+                    top.AddVariable(token.Lexeme, id);
                     break;
                 case TokenType.StringKeyword:
                     Match(TokenType.StringKeyword);
@@ -235,7 +251,7 @@ namespace Compiler.Parser
                     Match(TokenType.Identifier);
                     Match(TokenType.SemiColon);
                     id = new Id(token, AbstractSyntaxTreee.Type.String);
-                    top.Add(token.Lexeme, id);
+                    top.AddVariable(token.Lexeme, id);
                     break;
                 default:
                     Match(TokenType.IntKeyword);
@@ -243,7 +259,7 @@ namespace Compiler.Parser
                     Match(TokenType.Identifier);
                     Match(TokenType.SemiColon);
                     id = new Id(token, AbstractSyntaxTreee.Type.Int);
-                    top.Add(token.Lexeme, id);
+                    top.AddVariable(token.Lexeme, id);
                     break;
             }
         }

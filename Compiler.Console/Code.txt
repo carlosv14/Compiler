@@ -3,9 +3,9 @@ float o;
 int x;
 int y;
 string a;
-print(x,y,a,o);
+print(a, 1);
 o:= 5.89;
-a := o + 'hola peter!';
+a := 'hola peter!' + o;
 if(1>2)
     x := 10;
 else
