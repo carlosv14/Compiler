@@ -1,10 +1,9 @@
-﻿using Compiler.Lexer.Tokens;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
-namespace Compiler.AbstractSyntaxTreee
+namespace Compiler.Core
 {
     public class Type : IEquatable<Type>
     {

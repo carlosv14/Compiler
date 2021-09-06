@@ -1,25 +1,23 @@
-﻿using Compiler.AbstractSyntaxTreee.Expressions;
+﻿using Compiler.Core.Expressions;
+using Compiler.Core.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Compiler.AbstractSyntaxTreee.Statements
+namespace Compiler.Core.Statements
 {
-    public class ElseStatement : Statement, ISemanticValidation
+    public class ElseStatement : Statement
     {
-        public ElseStatement(Expression expression, Statement trueStatement, Statement falseStatement)
+        public ElseStatement(TypedExpression expression, Statement trueStatement, Statement falseStatement)
         {
             Expression = expression;
             TrueStatement = trueStatement;
             FalseStatement = falseStatement;
-            Validate();
         }
 
-        public Expression Expression { get; }
+        public TypedExpression Expression { get; }
         public Statement TrueStatement { get; }
         public Statement FalseStatement { get; }
 
-        public void Validate()
+        public override void ValidateSemantic()
         {
             if (Expression.GetExpressionType() != Type.Bool)
             {

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Compiler.AbstractSyntaxTreee
+namespace Compiler.Core.Interfaces
 {
     public interface ISemanticValidation
     {
-        void Validate();
+        void ValidateSemantic();
     }
 }

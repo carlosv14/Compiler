@@ -1,14 +1,12 @@
-﻿using Compiler.Lexer.Tokens;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace Compiler.AbstractSyntaxTreee.Expressions
+namespace Compiler.Core.Expressions
 {
-    public class ArithmeticOperator : BinaryOperator
+    public class ArithmeticOperator : TypedBinaryOperator
     {
         private readonly Dictionary<(Type, Type), Type> _typeRules;
-        public ArithmeticOperator(Token token, Expression leftExpression, Expression rightExpression)
+        public ArithmeticOperator(Token token, TypedExpression leftExpression, TypedExpression rightExpression)
             : base(token, leftExpression, rightExpression, null)
         {
             _typeRules = new Dictionary<(Type, Type), Type>

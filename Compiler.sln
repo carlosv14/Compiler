@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Compiler.Console", "Compile
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Compiler.Parser", "Compiler.Parser\Compiler.Parser.csproj", "{D2CB367B-D104-4D34-92C8-A3F7B863C9D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Compiler.AbstractSyntaxTreee", "Compiler.AbstractSyntaxTreee\Compiler.AbstractSyntaxTreee.csproj", "{47074AB6-39BD-467D-A4CB-DC771E318AC1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Compiler.Core", "Compiler.Core\Compiler.Core.csproj", "{61CDEC95-35ED-4B2B-8074-29691558FE12}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{D2CB367B-D104-4D34-92C8-A3F7B863C9D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2CB367B-D104-4D34-92C8-A3F7B863C9D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2CB367B-D104-4D34-92C8-A3F7B863C9D1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{47074AB6-39BD-467D-A4CB-DC771E318AC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{47074AB6-39BD-467D-A4CB-DC771E318AC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{47074AB6-39BD-467D-A4CB-DC771E318AC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{47074AB6-39BD-467D-A4CB-DC771E318AC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61CDEC95-35ED-4B2B-8074-29691558FE12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61CDEC95-35ED-4B2B-8074-29691558FE12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61CDEC95-35ED-4B2B-8074-29691558FE12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61CDEC95-35ED-4B2B-8074-29691558FE12}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

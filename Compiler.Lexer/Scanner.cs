@@ -1,4 +1,5 @@
-﻿using Compiler.Lexer.Tokens;
+﻿using Compiler.Core;
+using Compiler.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;

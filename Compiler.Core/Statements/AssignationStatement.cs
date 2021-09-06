@@ -1,23 +1,21 @@
-﻿using Compiler.AbstractSyntaxTreee.Expressions;
+﻿using Compiler.Core.Expressions;
+using Compiler.Core.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Compiler.AbstractSyntaxTreee.Statements
+namespace Compiler.Core.Statements
 {
-    public class AssignationStatement : Statement, ISemanticValidation
+    public class AssignationStatement : Statement
     {
-        public AssignationStatement(Id id, Expression expression)
+        public AssignationStatement(Id id, TypedExpression expression)
         {
             Id = id;
             Expression = expression;
-            Validate();
         }
 
         public Id Id { get; }
-        public Expression Expression { get; }
+        public TypedExpression Expression { get; }
 
-        public void Validate()
+        public override void ValidateSemantic()
         {
             if (Id.GetExpressionType() != Expression.GetExpressionType())
             {

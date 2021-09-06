@@ -1,6 +1,4 @@
-﻿using Compiler.Lexer.Tokens;
-
-namespace Compiler.Lexer
+﻿namespace Compiler.Core.Interfaces
 {
     public interface IScanner
     {

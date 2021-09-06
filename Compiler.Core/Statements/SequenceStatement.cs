@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Compiler.AbstractSyntaxTreee.Statements
+﻿namespace Compiler.Core.Statements
 {
     public class SequenceStatement : Statement
     {
@@ -14,6 +10,12 @@ namespace Compiler.AbstractSyntaxTreee.Statements
         {
             FirstStatement = firstStatement;
             NextStatement = nextStatement;
+        }
+
+        public override void ValidateSemantic()
+        {
+            FirstStatement.ValidateSemantic();
+            NextStatement.ValidateSemantic();
         }
     }
 }

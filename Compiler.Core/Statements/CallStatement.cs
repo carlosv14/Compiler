@@ -1,25 +1,23 @@
-﻿using Compiler.AbstractSyntaxTreee.Expressions;
+﻿using Compiler.Core.Expressions;
+using Compiler.Core.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Compiler.AbstractSyntaxTreee.Statements
+namespace Compiler.Core.Statements
 {
-    public class CallStatement : Statement, ISemanticValidation
+    public class CallStatement : Statement
     {
         public CallStatement(Id id, Expression arguments, Expression attributes)
         {
             Id = id;
             Arguments = arguments;
             Attributes = attributes;
-            Validate();
         }
 
         public Id Id { get; }
         public Expression Arguments { get; }
         public Expression Attributes { get; }
 
-        public void Validate()
+        public override void ValidateSemantic()
         {
             ValidateArguments(Attributes, Arguments);
         }
@@ -42,9 +40,9 @@ namespace Compiler.AbstractSyntaxTreee.Statements
                 ValidateArguments(attr.LeftExpression, arg.LeftExpression);
                 ValidateArguments(attr.RightExpression, arg.RightExpression);
             }
-            else if (attributes.GetExpressionType() != arguments.GetExpressionType())
+            else if (attributes is TypedExpression typedAttr && arguments is TypedExpression typedArg && typedAttr.GetExpressionType() != typedArg.GetExpressionType())
             {
-                throw new ApplicationException($"Expected {attributes.GetExpressionType()} but received {arguments.GetExpressionType()}");
+                throw new ApplicationException($"Expected {typedAttr.GetExpressionType()} but received {typedArg.GetExpressionType()}");
             }
 
         }
