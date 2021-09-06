@@ -12,10 +12,11 @@ namespace Compiler.Parser
 
     public class Symbol
     {
-        public Symbol(SymbolType symbolType, Id id)
+        public Symbol(SymbolType symbolType, Id id, dynamic value)
         {
             SymbolType = symbolType;
             Id = id;
+            Value = value;
         }
 
         public Symbol(SymbolType symbolType, Id id, Expression attributes)
@@ -27,6 +28,7 @@ namespace Compiler.Parser
 
         public SymbolType SymbolType { get; }
         public Id Id { get; }
+        public dynamic Value { get; set; }
         public Expression Attributes { get; }
     }
 
@@ -43,10 +45,17 @@ namespace Compiler.Parser
 
         public void AddVariable(string lexeme, Id id)
         {
-            if(!_table.TryAdd(lexeme, new Symbol(SymbolType.Variable, id)))
+            if (!_table.TryAdd(lexeme, new Symbol(SymbolType.Variable, id, null)))
             {
                 throw new ApplicationException($"Variable {lexeme} already defined in current context");
             }
+        }
+
+        public void UpdateVariable(string lexeme, dynamic value)
+        {
+            var variable = Get(lexeme);
+            variable.Value = value;
+            _table[lexeme] = variable;
         }
 
         public void AddMethod(string lexeme, Id id, BinaryOperator arguments)
@@ -59,9 +68,9 @@ namespace Compiler.Parser
 
         public Symbol Get(string lexeme)
         {
-            for (var currentEnv = this; currentEnv != null; currentEnv = Previous)
+            for (var currentEnv = this; currentEnv != null; currentEnv = currentEnv.Previous)
             {
-                if (_table.TryGetValue(lexeme, out var found))
+                if (currentEnv._table.TryGetValue(lexeme, out var found))
                 {
                     return found;
                 }

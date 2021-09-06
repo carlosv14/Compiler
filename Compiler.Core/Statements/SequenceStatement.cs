@@ -14,8 +14,8 @@
 
         public override void ValidateSemantic()
         {
-            FirstStatement.ValidateSemantic();
-            NextStatement.ValidateSemantic();
+            FirstStatement?.ValidateSemantic();
+            NextStatement?.ValidateSemantic();
         }
     }
 }

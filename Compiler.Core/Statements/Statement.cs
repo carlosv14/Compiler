@@ -2,18 +2,8 @@
 
 namespace Compiler.Core.Statements
 {
-    public class Statement : Node, ISemanticValidation
+    public abstract class Statement : Node, ISemanticValidation
     {
-        public Statement()
-        {
-
-        }
-
-        public static Statement Null => new Statement();
-
-        public virtual void ValidateSemantic()
-        {
-
-        }
+        public abstract void ValidateSemantic();
     }
 }

@@ -2,8 +2,7 @@
 
 namespace Compiler.Core
 {
-    public class Node
+    public abstract class Node
     {
-
     }
 }

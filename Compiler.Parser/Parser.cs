@@ -26,13 +26,6 @@ namespace Compiler.Parser
 
         private Statement Program()
         {
-            return Block();
-        }
-
-        private Statement Block()
-        {
-            Match(TokenType.OpenBrace);
-            var previousSavedEnvironment = top;
             top = new Environment(top);
             top.AddMethod("print", new Id(new Token
             {
@@ -50,7 +43,14 @@ namespace Compiler.Parser
             {
                 Lexeme = "arg2"
             }, Type.String)));
+            return Block();
+        }
 
+        private Statement Block()
+        {
+            Match(TokenType.OpenBrace);
+            var previousSavedEnvironment = top;
+            top = new Environment(top);
             Decls();
             var statements = Stmts();
             Match(TokenType.CloseBrace);
@@ -62,7 +62,7 @@ namespace Compiler.Parser
         {
             if (this.lookAhead.TokenType == TokenType.CloseBrace)
             {//{}
-                return Statement.Null;
+                return null;
             }
             return new SequenceStatement(Stmt(), Stmts());
         }
