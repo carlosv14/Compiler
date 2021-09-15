@@ -15,6 +15,14 @@ namespace Compiler.Core.Statements
         public TypedExpression Expression { get; }
         public Statement Statement { get; }
 
+        public override void Evaluate()
+        {
+            if (Expression.Evaluate())
+            {
+                Statement.Evaluate();
+            }
+        }
+
         public override void ValidateSemantic()
         {
             if (Expression.GetExpressionType() != Type.Bool)

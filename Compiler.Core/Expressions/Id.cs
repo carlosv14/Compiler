@@ -6,6 +6,11 @@
         {
         }
 
+        public override dynamic Evaluate()
+        {
+            return EnvironmentManager.GetSymbolForEvaluation(Token.Lexeme).Value;
+        }
+
         public override Type GetExpressionType()
         {
             return type;

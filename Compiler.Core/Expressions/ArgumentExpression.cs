@@ -7,5 +7,11 @@
         {
 
         }
+
+        public ArgumentExpression(Token token, TypedExpression leftExpression)
+            : base(token, leftExpression, null, null)
+        {
+
+        }
     }
 }

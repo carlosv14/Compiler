@@ -11,7 +11,6 @@ namespace Compiler.Parser
     {
         private readonly IScanner scanner;
         private Token lookAhead;
-        private Environment top;
 
         public Parser(IScanner scanner)
         {
@@ -26,35 +25,34 @@ namespace Compiler.Parser
 
         private Statement Program()
         {
-            top = new Environment(top);
-            top.AddMethod("print", new Id(new Token
+            EnvironmentManager.PushContext();
+            EnvironmentManager.AddMethod("print", new Id(new Token
             {
-                Lexeme = "print"
+                Lexeme = "print",
             }, Type.Void),
             new ArgumentExpression(new Token
             {
-                Lexeme = ","
+                Lexeme = ""
             },
             new Id(new Token
             {
                 Lexeme = "arg1"
-            }, Type.String),
-            new Id(new Token
-            {
-                Lexeme = "arg2"
             }, Type.String)));
-            return Block();
+
+            var block = Block();
+            block.ValidateSemantic();
+            block.Evaluate();
+            return block;
         }
 
         private Statement Block()
         {
             Match(TokenType.OpenBrace);
-            var previousSavedEnvironment = top;
-            top = new Environment(top);
+            EnvironmentManager.PushContext();
             Decls();
             var statements = Stmts();
             Match(TokenType.CloseBrace);
-            top = previousSavedEnvironment;
+            EnvironmentManager.PopContext();
             return statements;
         }
 
@@ -75,7 +73,7 @@ namespace Compiler.Parser
             {
                 case TokenType.Identifier:
                     {
-                        var symbol = top.Get(this.lookAhead.Lexeme);
+                        var symbol = EnvironmentManager.GetSymbol(this.lookAhead.Lexeme);
                         Match(TokenType.Identifier);
                         if (this.lookAhead.TokenType == TokenType.Assignation)
                         {
@@ -179,7 +177,7 @@ namespace Compiler.Parser
                     Match(TokenType.StringConstant);
                     return constant;
                 default:
-                    var symbol = top.Get(this.lookAhead.Lexeme);
+                    var symbol = EnvironmentManager.GetSymbol(this.lookAhead.Lexeme);
                     Match(TokenType.Identifier);
                     return symbol.Id;
             }
@@ -219,7 +217,7 @@ namespace Compiler.Parser
         {
             Match(TokenType.Assignation);
             var expression = Eq();
-            Match(TokenType.SemiColon);
+            Match(TokenType.SemiColon); 
             return new AssignationStatement(id, expression as TypedExpression);
         }
 
@@ -244,7 +242,7 @@ namespace Compiler.Parser
                     Match(TokenType.Identifier);
                     Match(TokenType.SemiColon);
                     var id = new Id(token, Type.Float);
-                    top.AddVariable(token.Lexeme, id);
+                    EnvironmentManager.AddVariable(token.Lexeme, id);
                     break;
                 case TokenType.StringKeyword:
                     Match(TokenType.StringKeyword);
@@ -252,7 +250,7 @@ namespace Compiler.Parser
                     Match(TokenType.Identifier);
                     Match(TokenType.SemiColon);
                     id = new Id(token, Type.String);
-                    top.AddVariable(token.Lexeme, id);
+                    EnvironmentManager.AddVariable(token.Lexeme, id);
                     break;
                 default:
                     Match(TokenType.IntKeyword);
@@ -260,7 +258,7 @@ namespace Compiler.Parser
                     Match(TokenType.Identifier);
                     Match(TokenType.SemiColon);
                     id = new Id(token, Type.Int);
-                    top.AddVariable(token.Lexeme, id);
+                    EnvironmentManager.AddVariable(token.Lexeme, id);
                     break;
             }
         }

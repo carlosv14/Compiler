@@ -20,7 +20,7 @@ namespace Compiler.Lexer
                 { "else", TokenType.ElseKeyword },
                 { "int", TokenType.IntKeyword },
                 { "float", TokenType.FloatKeyword },
-                { "string", TokenType.StringKeyword }
+                { "string", TokenType.StringKeyword },
             };
         }
 

@@ -17,7 +17,6 @@ namespace Compiler.Core
         public void Run()
         {
             var intermediateCode = this.parser.Parse();
-            intermediateCode.ValidateSemantic();
         }
     }
 }

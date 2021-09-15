@@ -21,6 +21,18 @@ namespace Compiler.Core.Expressions
             };
         }
 
+        public override dynamic Evaluate()
+        {
+            return Token.TokenType switch
+            {
+                TokenType.Plus => LeftExpression.Evaluate() + RightExpression.Evaluate(),
+                TokenType.Minus => LeftExpression.Evaluate() - RightExpression.Evaluate(),
+                TokenType.Asterisk => LeftExpression.Evaluate() * RightExpression.Evaluate(),
+                TokenType.Division => LeftExpression.Evaluate() - RightExpression.Evaluate(),
+                _ => throw new NotImplementedException()
+            };
+        }
+
         public override Type GetExpressionType()
         {
             if (_typeRules.TryGetValue((LeftExpression.GetExpressionType(), RightExpression.GetExpressionType()), out var resultType))

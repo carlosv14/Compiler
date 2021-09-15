@@ -17,5 +17,11 @@
             FirstStatement?.ValidateSemantic();
             NextStatement?.ValidateSemantic();
         }
+
+        public override void Evaluate()
+        {
+            FirstStatement?.Evaluate();
+            NextStatement?.Evaluate();
+        }
     }
 }

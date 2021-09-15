@@ -17,6 +17,28 @@ namespace Compiler.Core.Statements
         public Expression Arguments { get; }
         public Expression Attributes { get; }
 
+        public override void Evaluate()
+        {
+            var method = EnvironmentManager.GetSymbolForEvaluation(Id.Token.Lexeme);
+            if (method.Id.Token.Lexeme == "print")
+            {
+                InnerEvaluate(Arguments);
+            }
+        }
+
+        private void InnerEvaluate(Expression arguments)
+        {
+            if (arguments is BinaryOperator binary)
+            {
+                InnerEvaluate(binary.LeftExpression);
+                InnerEvaluate(binary.RightExpression);
+            }
+            {
+                var typedExpression = arguments as TypedExpression;
+                Console.WriteLine(typedExpression.Evaluate());
+            }
+        }
+
         public override void ValidateSemantic()
         {
             ValidateArguments(Attributes, Arguments);
@@ -29,8 +51,7 @@ namespace Compiler.Core.Statements
                 return;
             }
 
-            if (attributes is BinaryOperator && !(arguments is BinaryOperator) ||
-                arguments is BinaryOperator && !(attributes is BinaryOperator))
+            if (attributes is BinaryOperator binary && binary.RightExpression == null && (arguments is BinaryOperator))
             {
                 throw new ApplicationException("Incorrect amount of arguments supplied");
             }

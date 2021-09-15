@@ -17,6 +17,18 @@ namespace Compiler.Core.Statements
         public Statement TrueStatement { get; }
         public Statement FalseStatement { get; }
 
+        public override void Evaluate()
+        {
+            if (Expression.Evaluate())
+            {
+                TrueStatement.Evaluate();
+            }
+            else
+            {
+                FalseStatement.Evaluate();
+            }
+        }
+
         public override void ValidateSemantic()
         {
             if (Expression.GetExpressionType() != Type.Bool)

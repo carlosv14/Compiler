@@ -15,6 +15,11 @@ namespace Compiler.Core.Statements
         public Id Id { get; }
         public TypedExpression Expression { get; }
 
+        public override void Evaluate()
+        {
+            EnvironmentManager.UpdateVariable(Id.Token.Lexeme, Expression.Evaluate());
+        }
+
         public override void ValidateSemantic()
         {
             if (Id.GetExpressionType() != Expression.GetExpressionType())
