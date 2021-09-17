@@ -15,7 +15,14 @@ namespace Compiler.Core.Statements
         public Id Id { get; }
         public TypedExpression Expression { get; }
 
-        public override void Evaluate()
+        public override string Generate(int tabs)
+        {
+            var code = GetCodeInit(tabs);
+            code += $"{Id.Generate()} = {Expression.Generate()}{Environment.NewLine}";
+            return code;
+        }
+
+        public override void Interpret()
         {
             EnvironmentManager.UpdateVariable(Id.Token.Lexeme, Expression.Evaluate());
         }

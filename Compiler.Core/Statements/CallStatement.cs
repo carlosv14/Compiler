@@ -17,7 +17,7 @@ namespace Compiler.Core.Statements
         public Expression Arguments { get; }
         public Expression Attributes { get; }
 
-        public override void Evaluate()
+        public override void Interpret()
         {
             var method = EnvironmentManager.GetSymbolForEvaluation(Id.Token.Lexeme);
             if (method.Id.Token.Lexeme == "print")
@@ -33,6 +33,7 @@ namespace Compiler.Core.Statements
                 InnerEvaluate(binary.LeftExpression);
                 InnerEvaluate(binary.RightExpression);
             }
+            else
             {
                 var typedExpression = arguments as TypedExpression;
                 Console.WriteLine(typedExpression.Evaluate());
@@ -66,6 +67,29 @@ namespace Compiler.Core.Statements
                 throw new ApplicationException($"Expected {typedAttr.GetExpressionType()} but received {typedArg.GetExpressionType()}");
             }
 
+        }
+
+        public override string Generate(int tabs)
+        {
+            var code = GetCodeInit(tabs);
+            var innerCode = InnerCodeGenerateCode(Arguments);
+            code += $"{Id.Generate()}({innerCode}){Environment.NewLine}";
+            return code;
+        }
+
+        private string InnerCodeGenerateCode(Expression arguments)
+        {
+            var code = string.Empty;
+            if (arguments is BinaryOperator binary)
+            {
+                code += InnerCodeGenerateCode(binary.LeftExpression);
+                code += InnerCodeGenerateCode(binary.RightExpression);
+            }
+            else
+            {
+                code += arguments.Generate();
+            }
+            return code;
         }
     }
 }

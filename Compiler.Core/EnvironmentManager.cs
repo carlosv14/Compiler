@@ -9,27 +9,28 @@ namespace Compiler.Core
     public static class EnvironmentManager
     {
         private static List<Environment> _contexts = new List<Environment>();
+        private static List<Environment> _interpretContexts = new List<Environment>();
         private static int _currentIndex = -1;
 
         public static Environment PushContext()
         {
             var env = new Environment();
             _contexts.Add(env);
-            _currentIndex++;
+            _interpretContexts.Add(env);
             return env;
         }
 
         public static Environment PopContext()
         {
             var lastContext = _contexts.Last();
-            _currentIndex--;
+            _contexts.Remove(lastContext);
             return lastContext;
         }
 
 
         public static Symbol GetSymbol(string lexeme)
         {
-            for(int i = _currentIndex; i >= 0; i--)
+            for(int i = _contexts.Count - 1; i >= 0; i--)
             {
                 var context = _contexts[i];
                 var symbol = context.Get(lexeme);
@@ -43,7 +44,7 @@ namespace Compiler.Core
 
         public static Symbol GetSymbolForEvaluation(string lexeme)
         {
-            foreach (var context in _contexts)
+            foreach (var context in _interpretContexts)
             {
                 var symbol = context.Get(lexeme);
                 if (symbol != null)

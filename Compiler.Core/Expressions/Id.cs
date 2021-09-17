@@ -11,6 +11,11 @@
             return EnvironmentManager.GetSymbolForEvaluation(Token.Lexeme).Value;
         }
 
+        public override string Generate()
+        {
+            return Token.Lexeme;
+        }
+
         public override Type GetExpressionType()
         {
             return type;

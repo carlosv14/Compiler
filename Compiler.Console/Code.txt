@@ -1,39 +1,38 @@
 ﻿{
-float o;
-int x;
-int y;
-int w;
-string a;
-y := 1;
-o:= 5.89;
-a := 'hola peter!' + o;
-
-print(a);
-
-if(o <= 5.89)
-{
-if(y <> 1){
-    print('distinto');
-}
-else{
-    print('igual');
-}
- x := 10;
- print(x);
-}
-else if(y <> 1)
-    a:= 'adios';
-
-print(a);
-
-{
+    float o;
+    int x;
+    int y;
     int w;
-    {
-	int w;
-	int ylf;
-    }
+    string a;
+    y := 1;
+    o:= 5.89;
+    a := 'hola peter!' + o;
 
-}
-y:=6+2+3+5;
-print(y);
+    if(o>0)
+    {
+	print('yes');
+	if(0 > 1)
+	{
+	    print('sure');
+	}
+	else
+	{
+	    print('who knows');
+	}
+    }
+    else if(y = 1)
+    {
+	print('no');
+	if(y > 2)
+	    print('true');
+
+	if(0 > 1)
+	{
+	    int one;
+	    int two;
+	    one := 1;
+	    two := 2;
+	    print(one+two);
+       }
+    }
 }

@@ -15,11 +15,19 @@ namespace Compiler.Core.Statements
         public TypedExpression Expression { get; }
         public Statement Statement { get; }
 
-        public override void Evaluate()
+        public override string Generate(int tabs)
+        {
+            var code = GetCodeInit(tabs);
+            code += $"if({Expression.Generate()}):{Environment.NewLine}";
+            code += $"{Statement.Generate(tabs + 1)}{Environment.NewLine}";
+            return code;
+        }
+
+        public override void Interpret()
         {
             if (Expression.Evaluate())
             {
-                Statement.Evaluate();
+                Statement.Interpret();
             }
         }
 

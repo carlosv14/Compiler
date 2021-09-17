@@ -6,6 +6,6 @@ namespace Compiler.Core.Interfaces
 {
     public interface IStatementEvaluate
     {
-        void Evaluate();
+        void Interpret();
     }
 }

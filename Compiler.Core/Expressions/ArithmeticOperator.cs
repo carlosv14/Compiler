@@ -28,9 +28,20 @@ namespace Compiler.Core.Expressions
                 TokenType.Plus => LeftExpression.Evaluate() + RightExpression.Evaluate(),
                 TokenType.Minus => LeftExpression.Evaluate() - RightExpression.Evaluate(),
                 TokenType.Asterisk => LeftExpression.Evaluate() * RightExpression.Evaluate(),
-                TokenType.Division => LeftExpression.Evaluate() - RightExpression.Evaluate(),
+                TokenType.Division => LeftExpression.Evaluate() / RightExpression.Evaluate(),
                 _ => throw new NotImplementedException()
             };
+        }
+
+        public override string Generate()
+        {
+            if (LeftExpression.GetExpressionType() == Type.String &&
+                RightExpression.GetExpressionType() != Type.String)
+            {
+                return $"{LeftExpression.Generate()} {Token.Lexeme} str({RightExpression.Generate()})";
+            }
+
+            return $"{LeftExpression.Generate()} {Token.Lexeme} {RightExpression.Generate()}";
         }
 
         public override Type GetExpressionType()
